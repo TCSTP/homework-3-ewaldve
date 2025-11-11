@@ -55,6 +55,19 @@ data class Cart(
 
 fun Cart.update(other: Pair<Item, UInt>): Cart = copy(items = items + other)
 
+fun Cart.decrementItem(item: Item): Cart {
+    val currentAmount = items[item] ?: return this
+
+    return if (currentAmount <= 1u) {
+        this - item
+    } else {
+        val newItems = items + (item to (currentAmount - 1u))
+        copy(items = newItems)
+    }
+}
+
+
+
 operator fun Cart.plus(other: Pair<Item, UInt>): Cart {
     val (item, amount) = other
 
